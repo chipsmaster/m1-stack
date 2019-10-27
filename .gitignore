@@ -1,0 +1,6 @@
+/.env
+/docker-compose.override.yml
+/magento/
+!/magento/.gitkeep
+/mysql/initdb.d/
+!/mysql/initdb.d/.gitkeep

@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:5.6
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./mysql/initdb.d:/docker-entrypoint-initdb.d:ro
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: magento
+      MYSQL_USER: magento
+      MYSQL_PASSWORD: magento
+
+  apache:
+    build:
+      context: ./apache
+      args:
+        MAGENTO_USER_ID: "${HOST_USER_ID:?err}"
+        MAGENTO_USER_GROUP_ID: "${HOST_USER_GROUP_ID:?err}"
+    volumes:
+      - ./magento:/var/www/magento
+    ports:
+      - '80:80'
+    networks:
+      default:
+        aliases:
+          - magento1.local
+          - magento1-website2.local
+          - magento1-website3.local
+
+  mailhog:
+    image: mailhog/mailhog
+
+volumes:
+  mysql:
+
